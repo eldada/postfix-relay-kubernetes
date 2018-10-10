@@ -1,0 +1,64 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "postfix.fullname" . }}
+  labels:
+    app: {{ template "postfix.name" . }}
+    chart: {{ template "postfix.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "postfix.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "postfix.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ template "postfix.serviceAccountName" . }}
+      containers:
+      - name: {{ template "postfix.name" . }}
+        image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: TX_SMTP_RELAY_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: {{ template "postfix.fullname" . }}
+              key: tx-smtp-relay-host
+        - name: TX_SMTP_RELAY_MYHOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: {{ template "postfix.fullname" . }}
+              key: tx-smtp-relay-myhostname
+        - name: TX_SMTP_RELAY_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: {{ template "postfix.fullname" . }}
+              key: tx-smtp-relay-username
+        - name: TX_SMTP_RELAY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "postfix.fullname" . }}
+              key: tx-smtp-relay-password
+        ports:
+          - name: smtp
+            containerPort: 25
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}

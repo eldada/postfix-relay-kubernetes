@@ -1,0 +1,13 @@
+{{- if .Values.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ template "postfix.fullname" . }}
+  labels:
+    app: {{ template "postfix.name" . }}
+    chart: {{ template "postfix.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+rules:
+{{ toYaml .Values.rbac.role.rules }}
+{{- end }}
