@@ -35,6 +35,11 @@ spec:
             configMapKeyRef:
               name: {{ template "postfix.fullname" . }}
               key: tx-smtp-relay-myhostname
+        - name: TX_SMTP_RELAY_NETWORKS
+          valueFrom:
+            configMapKeyRef:
+              name: {{ template "postfix.fullname" . }}
+              key: tx-smtp-relay-networks
         - name: TX_SMTP_RELAY_USERNAME
           valueFrom:
             configMapKeyRef:
