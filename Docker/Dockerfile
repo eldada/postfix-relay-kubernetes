@@ -16,4 +16,3 @@ COPY . /
 EXPOSE 25
 
 ENTRYPOINT [ "/entrypoint.sh" ]
-
