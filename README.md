@@ -24,7 +24,7 @@ docker run --rm -d --name postfix-relay -p 2525:25 \
 	-e TX_SMTP_RELAY_USERNAME=${USERNAME} \
 	-e TX_SMTP_RELAY_PASSWORD=${PASSWORD} \
 	-e TX_SMTP_RELAY_NETWORKS=${TX_SMTP_RELAY_NETWORKS} \
-	eldada-docker-examples.bintray.io/postfix-relay:0.3
+	eldada-docker-examples.bintray.io/postfix-relay:0.4
 ```
 
 Test sending mail
