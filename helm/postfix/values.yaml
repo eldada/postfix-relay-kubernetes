@@ -52,6 +52,11 @@ smtp:
   relayPassword: relaypassword
   relayNetworks: '10.0.0.0/8,127.0.0.0/8,172.17.0.0/16,192.0.0.0/8'
 
+# Optional extra configuration to add in /etc/postfix/main.cf
+# A single string with key=value separated by newline char (\n)
+# Example: postfixExtraConfig: "key1 = value1\nkey2 = value2"
+postfixExtraConfig:
+
 # Resources needed for the pods
 resources:
   requests:
