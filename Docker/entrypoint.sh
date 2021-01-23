@@ -6,15 +6,15 @@ TX_SMTP_RELAY_USERNAME=${TX_SMTP_RELAY_USERNAME?Missing env var TX_SMTP_RELAY_US
 TX_SMTP_RELAY_PASSWORD=${TX_SMTP_RELAY_PASSWORD?Missing env var TX_SMTP_RELAY_PASSWORD}
 TX_SMTP_RELAY_NETWORKS=${TX_SMTP_RELAY_NETWORKS:-10.0.0.0/8,127.0.0.0/8,172.17.0.0/16,192.0.0.0/8}
 
-echo "==============================="
-echo "===  Setting configuration  ==="
+echo "============================="
+echo "=== Setting configuration ==="
 echo "TX_SMTP_RELAY_HOST        -  ${TX_SMTP_RELAY_HOST}"
 echo "TX_SMTP_RELAY_MYHOSTNAME  -  ${TX_SMTP_RELAY_MYHOSTNAME}"
 echo "TX_SMTP_RELAY_USERNAME    -  ${TX_SMTP_RELAY_USERNAME}"
 echo "TX_SMTP_RELAY_PASSWORD    -  (hidden)"
 echo "TX_SMTP_RELAY_NETWORKS    -  ${TX_SMTP_RELAY_NETWORKS}"
-echo "POSTFIX_EXTRA_CONFIG      -  ${POSTFIX_EXTRA_CONFIG}"
-echo "==============================="
+echo "POSTFIX_CUSTOM_CONFIG     -  ${POSTFIX_CUSTOM_CONFIG}"
+echo "============================="
 
 # Write SMTP credentials
 echo "${TX_SMTP_RELAY_HOST} ${TX_SMTP_RELAY_USERNAME}:${TX_SMTP_RELAY_PASSWORD}" > /etc/postfix/sasl_passwd || exit 1
@@ -40,8 +40,19 @@ postconf 'smtputf8_enable = no' || exit 1
 postconf 'always_add_missing_headers = yes' || exit 1
 
 # Add extra configuration directly to /etc/postfix/main.cf
-if [ -n "${POSTFIX_EXTRA_CONFIG}" ]; then
-    echo -e "${POSTFIX_EXTRA_CONFIG}" >> /etc/postfix/main.cf || exit 1
+if [ -n "${POSTFIX_CUSTOM_CONFIG}" ]; then
+    echo
+    echo "============================"
+    echo "=== Custom configuration ==="
+    OLD_IFS=${IFS}
+    IFS=';'
+    for f in ${POSTFIX_CUSTOM_CONFIG}; do
+        f=$(echo "$f" | tr -d ' ')
+        echo "$f"
+        postconf "$f" || exit 1
+    done
+    IFS=${OLD_IFS}
+    echo "============================"
 fi
 
 # Have supervisord run and control postfix (/etc/supervisor.d/postfix.ini)

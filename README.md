@@ -15,8 +15,8 @@ export SMTP="[smtp.mailgun.org]:587"
 export USERNAME=<your smtp username>
 export PASSWORD=<your smtp password>
 
-# Optional configuration to add to /etc/postfix/main.cf (separated by a "\n" to force newline)
-export POSTFIX_EXTRA_CONFIG="key1 = value1\nkey2 = value2"
+# Optional custom configuration to add/override in /etc/postfix/main.cf (delimited by a ";")
+export POSTFIX_CUSTOM_CONFIG="key1 = value1;key2 = value2;key3 = value3"
 
 # Set list of allowed networks
 export TX_SMTP_RELAY_NETWORKS='10.0.0.0/8,127.0.0.0/8,172.17.0.0/16,192.0.0.0/8'
@@ -27,7 +27,7 @@ docker run --rm -d --name postfix-relay -p 2525:25 \
 	-e TX_SMTP_RELAY_USERNAME=${USERNAME} \
 	-e TX_SMTP_RELAY_PASSWORD=${PASSWORD} \
 	-e TX_SMTP_RELAY_NETWORKS=${TX_SMTP_RELAY_NETWORKS} \
-	-e POSTFIX_EXTRA_CONFIG="${POSTFIX_EXTRA_CONFIG}" \
+	-e POSTFIX_CUSTOM_CONFIG="${POSTFIX_CUSTOM_CONFIG}" \
 	eldada-docker-examples.bintray.io/postfix-relay:0.5
 ```
 
