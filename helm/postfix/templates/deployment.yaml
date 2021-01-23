@@ -50,6 +50,11 @@ spec:
             secretKeyRef:
               name: {{ template "postfix.fullname" . }}
               key: tx-smtp-relay-password
+        - name: POSTFIX_CUSTOM_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: {{ template "postfix.fullname" . }}
+              key: postfix-custom-config
         ports:
           - name: smtp
             containerPort: 25
