@@ -4,7 +4,7 @@ This repository has an example of a postfix relay running in Kubernetes using a 
 ## Build Docker image
 You can build the Docker image locally
 ```bash
-docker build -t eldada-docker-examples.bintray.io/postfix-relay:0.5 Docker/
+docker build -t eldada-docker-examples.bintray.io/postfix-relay:0.6 Docker/
 ```
 
 ## Run locally with Docker
@@ -28,7 +28,7 @@ docker run --rm -d --name postfix-relay -p 2525:25 \
 	-e TX_SMTP_RELAY_PASSWORD=${PASSWORD} \
 	-e TX_SMTP_RELAY_NETWORKS=${TX_SMTP_RELAY_NETWORKS} \
 	-e POSTFIX_CUSTOM_CONFIG="${POSTFIX_CUSTOM_CONFIG}" \
-	eldada-docker-examples.bintray.io/postfix-relay:0.5
+	eldada-docker-examples.bintray.io/postfix-relay:0.6
 ```
 
 Test sending mail
