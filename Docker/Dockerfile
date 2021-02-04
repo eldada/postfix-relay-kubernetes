@@ -6,6 +6,9 @@ MAINTAINER Eldad Assis <eldad.assis@gmail.com>
 RUN apk add --no-cache \
         postfix \
         rsyslog \
+	libsasl \
+	cyrus-sasl-plain \
+	cyrus-sasl-login \
         supervisor && \
         /usr/bin/newaliases
 
