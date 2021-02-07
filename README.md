@@ -46,7 +46,7 @@ rcpt to: you@your.co
 data
 354 End data with <CR><LF>.<CR><LF>
 Subject: Subject here...
-The true story of swans singing Pink Floyed. 
+The true story of swans singing Pink Floyd. 
 .
 250 2.0.0 Ok: queued as 982FF53C
 quit
