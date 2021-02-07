@@ -31,11 +31,26 @@ docker run --rm -d --name postfix-relay -p 2525:25 \
 	eldada-docker-examples.bintray.io/postfix-relay:0.6
 ```
 
-Test sending mail
+### Test sending mail
+1. Connect to running container on port 2525
 ```bash
-# Run in your host's terminal
-# Note the commands and responses from server
 telnet localhost 2525
+```
+
+2. Edit the following with your details and paste in your terminal
+```bash
+helo localhost
+mail from: noreply@yourhost.com
+rcpt to: you@your.co
+data
+Subject: Subject here...
+The true story of swans singing Pink Floyd. 
+.
+quit
+```
+
+3. You should see the following
+```bash
 220 tx-smtp-relay.yourhost.com ESMTP Postfix
 helo localhost
 250 tx-smtp-relay.yourhost.com
@@ -54,7 +69,7 @@ quit
 Connection closed by foreign host
 ```
 
-Check the inbox of `you@your.co` and see you got the email.
+4. Check the inbox of `you@your.co` and see you got the email.
 
 
 ## Deploy Helm Chart
