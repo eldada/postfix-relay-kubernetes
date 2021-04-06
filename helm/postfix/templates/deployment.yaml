@@ -56,7 +56,7 @@ spec:
               {{- if .Values.useExistingSecret }}
               name: {{ .Values.existingSecretName }}
               {{- else }}
-              name: {{ template "postfix.fullname" . }}
+              name: {{ template "postfix.fullname" . }}-secret
               {{- end }}
               key: tx-smtp-relay-password
         ports:

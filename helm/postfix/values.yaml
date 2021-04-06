@@ -54,14 +54,15 @@ smtp:
   relayPassword: relaypassword
   relayNetworks: '10.0.0.0/8,127.0.0.0/8,172.17.0.0/16,192.0.0.0/8'
 
+externalSecret:
+  enabled: false
+  secretsBackendType: secretsManager
+  secretsKey: infra/postfix
+
 # Use Externaly manages secrets
 useExistingSecret: false
 existingSecretName: postfix
 
-# e.g kuberentes-external-secrets
-useExternalSecrets: false
-ExternalSecretsBackendType: secretsManager 
-ExternalSecretsKey: infra/postfix
 
 # Optional extra configuration to add or edit in /etc/postfix/main.cf
 # A single string with key=value separated by a semicolon char (;)

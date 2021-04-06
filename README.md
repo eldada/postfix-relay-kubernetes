@@ -117,7 +117,7 @@ helm upgrade --install postfix-relay \
         helm/postfix
 ```
 
-1. Use kubernetes external secrets
+1. Use [kubernetes external secrets](https://github.com/external-secrets/kubernetes-external-secrets/blob/master/charts/kubernetes-external-secrets/crds/kubernetes-client.io_externalsecrets_crd.yaml)
 
 - have the chart generate the smtp-password from `externalSecrets` in this case you should update your backend secret to have the required key named `tx-smtp-relay-password` with your SMTP password so it can be set into the postfix config at runtime.
 
