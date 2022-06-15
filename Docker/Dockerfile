@@ -9,6 +9,7 @@ RUN apk add --no-cache \
 	libsasl \
 	cyrus-sasl-plain \
 	cyrus-sasl-login \
+	ca-certificates \
     supervisor && \
     /usr/bin/newaliases
 
