@@ -1,4 +1,4 @@
-FROM alpine:3.12.1
+FROM alpine:3.12.12
 
 MAINTAINER Eldad Assis <eldad.assis@gmail.com>
 
