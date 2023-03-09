@@ -34,7 +34,7 @@ serviceAccount:
 # Docker image
 image:
   repository: eldada.jfrog.io/docker/postfix-relay
-  tag: 0.7
+  tag: 0.8
   pullPolicy: IfNotPresent
 
 # Expose pods with service on port 25
