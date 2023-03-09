@@ -42,7 +42,7 @@ image:
 exporter:
   enabled: false
   image:
-    repository: chatwork/kumina-postfix-exporter
+    repository: eldada.jfrog.io/docker/chatwork/kumina-postfix-exporter
     tag: edge
     pullPolicy: Always
   # Resources needed for the postfix-exporter container
