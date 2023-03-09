@@ -75,22 +75,42 @@ Connection closed by foreign host
 ## Deploy Helm Chart
 The Helm Chart in [helm/postfix](helm/postfix) directory can be used to deploy the postfix-relay into your Kubernetes cluster.
 
-The Chart will deploy 2 pods (for high availability), load balanced with a service, exposing port 25.
+Create a `custom-values.yaml` with the configuration details
+```yaml
+smtp:
+  relayHost: "[smtp.mailgun.org]:587"
+  relayMyhostname: <your smtp hostname>
+  relayUsername: <your smtp username>
+  relayPassword: <your smtp password>
+  relayNetworks: '10.0.0.0/8,127.0.0.0/8,172.17.0.0/16,192.0.0.0/8'
+```
+
+Deploy postfix
 ```bash
-# Need to set SMTP connection details
-export SMTP="[smtp.mailgun.org]:587"
-export USERNAME=<your smtp username>
-export PASSWORD=<your smtp password>
+helm upgrade --install postfix-relay helm/postfix -f custom-values.yaml
+```
 
-helm upgrade --install postfix-relay \
-        --set smtp.relayHost=${SMTP} \
-        --set smtp.relayMyhostname=my.local \
-        --set smtp.relayUsername=${USERNAME} \
-        --set smtp.relayPassword=${PASSWORD} \ 
-        helm/postfix
+### Postfix Metrics exporter
+An optional postfix-exporter sidecar can be deployed for exposing postfix metrics. This is using the work from https://github.com/kumina/postfix_exporter.
 
+To enable the exporter sidecar, update your `custom-values.yaml` file and **add**
+```yaml
+# Enable the postfix-exporter sidecar
+exporter:
+  enabled: true
 
+# Enable a ServiceMonitor object for Prometheus scraping
+serviceMonitor:
+  enabled: true
+```
+
+Deploy postfix
+```bash
+helm upgrade --install postfix-relay helm/postfix -f custom-values.yaml
 ```
 
 ## Thanks
-This work is based on examples from https://github.com/applariat/kubernetes-postfix-relay-host 
+The work in this repository is based on
+- https://github.com/applariat/kubernetes-postfix-relay-host
+- https://github.com/kumina/postfix_exporter
+- My pains
