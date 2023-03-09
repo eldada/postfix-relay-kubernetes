@@ -22,7 +22,7 @@ spec:
       serviceAccountName: {{ template "postfix.serviceAccountName" . }}
       containers:
       - name: {{ template "postfix.name" . }}
-        image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+        image: '{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}'
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         env:
         - name: TX_SMTP_RELAY_HOST
@@ -57,10 +57,38 @@ spec:
               key: postfix-custom-config
         ports:
           - name: smtp
-            containerPort: 25
+            containerPort: {{ .Values.service.port }}
+        volumeMounts:
+          - mountPath: /var/spool/postfix/
+            name: metrics
+          - mountPath: /data/log/
+            name: logs
         resources:
 {{ toYaml .Values.resources | indent 10 }}
-    {{- with .Values.nodeSelector }}
+{{- if .Values.exporter.enabled }}
+      - name: {{ template "postfix.name" . }}-exporter
+        image: '{{ .Values.exporter.image.repository }}:{{ .Values.exporter.image.tag }}'
+        imagePullPolicy: {{ .Values.exporter.image.pullPolicy }}
+        args:
+          - --postfix.logfile_path=/data/log/maillog
+          - --postfix.showq_path=/var/spool/postfix/public/showq
+        ports:
+          - name: exporter
+            containerPort: {{ .Values.service.exporterPort }}
+        volumeMounts:
+          - mountPath: /var/spool/postfix/
+            name: metrics
+          - mountPath: /data/log/
+            name: logs
+        resources:
+{{ toYaml .Values.exporter.resources | indent 10 }}
+{{ end }}
+      volumes:
+        - name: metrics
+          emptyDir: {}
+        - name: logs
+          emptyDir: {}
+{{- with .Values.nodeSelector }}
       nodeSelector:
 {{ toYaml . | indent 8 }}
     {{- end }}

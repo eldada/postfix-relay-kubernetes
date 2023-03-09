@@ -7,7 +7,7 @@ RUN apk add --no-cache \
     postfix \
     rsyslog \
 	libsasl \
-	cyrus-sasl \
+	cyrus-sasl-login \
 	ca-certificates \
     supervisor && \
     /usr/bin/newaliases

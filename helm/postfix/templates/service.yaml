@@ -16,6 +16,10 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: smtp
       name: smtp
+{{- if .Values.exporter.enabled }}
+    - port: {{ .Values.service.exporterPort }}
+      name: exporter
+{{ end }}
   selector:
     app: {{ template "postfix.name" . }}
     release: {{ .Release.Name }}

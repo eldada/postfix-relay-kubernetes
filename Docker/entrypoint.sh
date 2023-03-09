@@ -23,7 +23,7 @@ rm /etc/postfix/sasl_passwd || exit 1
 
 # Set configurations
 postconf 'smtp_sasl_auth_enable = yes' || exit 1
-postconf 'smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd' || exit 1
+postconf 'smtp_sasl_password_maps = lmdb:/etc/postfix/sasl_passwd' || exit 1
 postconf 'smtp_sasl_security_options =' || exit 1
 
 # These are required

@@ -34,13 +34,37 @@ serviceAccount:
 # Docker image
 image:
   repository: eldada.jfrog.io/docker/postfix-relay
-  tag: 0.8
+#  tag: 0.8
   pullPolicy: IfNotPresent
+
+# Exporter Docker image
+# https://github.com/kumina/postfix_exporter
+exporter:
+  enabled: false
+  image:
+    repository: eldada.jfrog.io/docker/chatwork/kumina-postfix-exporter
+    tag: edge
+    pullPolicy: Always
+  # Resources needed for the postfix-exporter container
+  resources:
+    requests:
+      cpu: 10m
+      memory: 40Mi
+    limits:
+      cpu: 100m
+      memory: 100Mi
+
+# Add a ServiceMonitor object for scraping metrics by Prometheus
+# Must have exporter.enabled=true
+serviceMonitor:
+  # Enable only if you have support for ServiceMonitor object with version monitoring.coreos.com/v1 (Prometheus)
+  enabled: false
 
 # Expose pods with service on port 25
 service:
   type: ClusterIP
   port: 25
+  exporterPort: 9154
   loadBalancerIP:
 
 # SMTP server details
@@ -58,14 +82,14 @@ smtp:
 # Example: postfixCustomConfig: "key1 = value1; key2 = value2; key3 = value3"
 postfixCustomConfig:
 
-# Resources needed for the pods
+# Resources needed for the postfix container
 resources:
   requests:
-    cpu: 50m
-    memory: 64Mi
+    cpu: 40m
+    memory: 40Mi
   limits:
-    cpu: 200m
-    memory: 128Mi
+    cpu: 100m
+    memory: 100Mi
 
 nodeSelector: {}
 

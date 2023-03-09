@@ -1,0 +1,19 @@
+{{- if and .Values.exporter.enabled .Values.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ template "postfix.name" . }}-exporter
+  labels:
+    app: {{ template "postfix.name" . }}
+    release: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ template "postfix.name" . }}
+  namespaceSelector:
+    any: true
+  endpoints:
+    - port: exporter
+      path: /metrics
+      interval: "30s"
+{{ end }}
