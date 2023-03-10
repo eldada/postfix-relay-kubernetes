@@ -25,12 +25,9 @@ rm /etc/postfix/sasl_passwd || exit 1
 postconf 'smtp_sasl_auth_enable = yes' || exit 1
 postconf 'smtp_sasl_password_maps = lmdb:/etc/postfix/sasl_passwd' || exit 1
 postconf 'smtp_sasl_security_options =' || exit 1
-
-# These are required
+postconf 'smtpd_tls_CAfile = /etc/ssl/certs/ca-certificates.crt' || exit 1
 postconf "relayhost = ${TX_SMTP_RELAY_HOST}" || exit 1
 postconf "myhostname = ${TX_SMTP_RELAY_MYHOSTNAME}" || exit 1
-
-# Set allowed networks
 postconf "mynetworks = ${TX_SMTP_RELAY_NETWORKS}" || exit 1
 
 # http://www.postfix.org/COMPATIBILITY_README.html#smtputf8_enable
