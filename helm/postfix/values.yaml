@@ -43,7 +43,7 @@ exporter:
   enabled: false
   image:
     repository: eldada.jfrog.io/docker/postfix-exporter
-    tag: 0.1
+    tag: 0.2
     pullPolicy: IfNotPresent
   # Resources needed for the postfix-exporter container
   resources:
