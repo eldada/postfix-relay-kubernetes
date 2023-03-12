@@ -4,7 +4,11 @@ This repository has an example of a postfix relay running in Kubernetes using a 
 ## Build Docker image
 You can build the Docker image locally
 ```bash
-docker build -t eldada.jfrog.io/docker/postfix-relay:0.8 Docker/
+# For local build
+docker build -t eldada.jfrog.io/docker/postfix-relay:0.9 Docker/
+
+# Multi arch build and push
+docker buildx build --platform linux/amd64,linux/arm64 -t eldada.jfrog.io/docker/postfix-relay:0.9 Docker/p --push
 ```
 
 ## Run locally with Docker
@@ -28,7 +32,7 @@ docker run --rm -d --name postfix-relay -p 2525:25 \
 	-e TX_SMTP_RELAY_PASSWORD=${PASSWORD_TEST} \
 	-e TX_SMTP_RELAY_NETWORKS=${TX_SMTP_RELAY_NETWORKS} \
 	-e POSTFIX_CUSTOM_CONFIG="${POSTFIX_CUSTOM_CONFIG}" \
-	eldada.jfrog.io/docker/postfix-relay:0.8
+	eldada.jfrog.io/docker/postfix-relay:0.9
 ```
 
 ### Test sending mail
