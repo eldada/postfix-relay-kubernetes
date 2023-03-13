@@ -8,7 +8,7 @@ replicaCount: 2
 # Role Based Access Control
 # Ref: https://kubernetes.io/docs/admin/authorization/rbac/
 rbac:
-  create: true
+  create: false
   role:
     ## Rules to create. It follows the role specification
     rules:
@@ -26,7 +26,7 @@ rbac:
 # Service Account
 # Ref: https://kubernetes.io/docs/admin/service-accounts-admin/
 serviceAccount:
-  create: true
+  create: false
   ## The name of the ServiceAccount to use.
   ## If not set and create is true, a name is generated using the fullname template
   name:

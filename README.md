@@ -1,5 +1,7 @@
 # Postfix relay running in Kubernetes
-This repository has an example of a postfix relay running in Kubernetes using a helm chart.
+This repository has an example of a postfix relay Docker image and a Helm chart for running in Kubernetes.
+
+The Helm chart also includes an optional Prometheus exporter sidecar from my [postfix-metrics-exporter](https://github.com/eldada/postfix-metrics-exporter) repository (forked from [kumina/postfix_exporter](https://github.com/kumina/postfix_exporter))
 
 ## Build Docker image
 You can build the Docker image locally
@@ -75,7 +77,6 @@ Connection closed by foreign host
 
 4. Check the inbox of `you@your.co` and see you got the email.
 
-
 ## Deploy Helm Chart
 The Helm Chart in [helm/postfix](helm/postfix) directory can be used to deploy the postfix-relay into your Kubernetes cluster.
 
@@ -94,8 +95,8 @@ Deploy postfix
 helm upgrade --install postfix-relay helm/postfix -f custom-values.yaml
 ```
 
-### Postfix Metrics exporter
-An optional postfix-exporter sidecar can be deployed for exposing postfix metrics. This is using the work from https://github.com/kumina/postfix_exporter.
+### Postfix Metrics exporter for Prometheus
+An optional postfix-exporter sidecar can be deployed for exposing postfix metrics.
 
 To enable the exporter sidecar, update your `custom-values.yaml` file and **add**
 ```yaml
